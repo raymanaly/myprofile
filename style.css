@@ -174,3 +174,29 @@ button:hover {
     color: #190019;
     box-shadow: 0 0 15px #DFB6B2;
 }
+
+.social-links {
+    margin-top: 40px;
+    padding-bottom: 20px;
+    text-align: center;
+}
+
+.links-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.links-container a {
+    color: #888;
+    text-decoration: none;
+    font-family: 'VT323', monospace;
+    font-size: 1.2rem;
+    transition: 0.3s;
+}
+
+.links-container a:hover {
+    color: #BB86FC;
+    text-shadow: 0 0 8px #BB86FC;
+}

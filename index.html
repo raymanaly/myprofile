@@ -26,7 +26,7 @@
 
             
                 
-             <p>Diet coke enthusiast|BCA student|Aspiring developer|</p>
+             <p>Diet coke enthusiast |BCA student |Aspiring developer |</p>
             
 
             <section class="tech-arsenal">
@@ -66,17 +66,45 @@
                 </div>
             </section>
 
-            <section id="contact">
-                <h3>Let's Connect</h3>
+            <section id="content">
+                <h3>Drop a Message</h3>
+
                 <form id="contactForm">
-                    <input type="text" id="name" placeholder="Username" required>
-                    <input type="email" id="email" placeholder="Email" required>
-                    <textarea id="message" rows="3" placeholder="Message" required></textarea>
-                    <button type="submit" id="submitBtn">SEND!</button>
+                    <input type="text" placeholder="Username" required>
+                    <input type="email" placeholder="Email" required>
+                    <textarea rows="3" placeholder="Message" required></textarea>
+                    <button type="submit" id="sendBtn">SEND!</button>
                 </form>
+                <p id="successMessage" style="display:none; color: #BB86FC; margin-top: 10px; font-family: 'VT323', monospace;">
+                    > Message received! I'll get back to you soon.
+                </p>
             </section>
+
+            <footer class="social-links">
+                <div class="sidebar-divider"></div>
+                <div class="links-container">
+                    <a href="https://github.com/raymanaly" target="_blank">GitHub</a>
+                    <a href="https://www.linkedin.com/in/Manaly Ray" target="_blank">LinkedIn</a>
+                </div>
+            </footer>
         </main>
     </div>
 
-    </body>
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Stops the page from refreshing
+            
+            // Show the success message
+            document.getElementById('successMessage').style.display = 'block';
+            
+            // Clear the form fields
+            this.reset();
+            
+            // Optional: Hide the message after 5 seconds
+            setTimeout(() => {
+                document.getElementById('successMessage').style.display = 'none';
+            }, 5000);
+        });
+    </script>
+</body>
 </html>
