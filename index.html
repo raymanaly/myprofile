@@ -106,5 +106,42 @@
             }, 5000);
         });
     </script>
+    <script>
+    const contactForm = document.getElementById('contactForm');
+    const successMessage = document.getElementById('successMessage');
+
+    contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault(); // Prevents the page from refreshing
+
+        // 1. Collect the data from the form fields
+        const formData = {
+            username: contactForm[0].value,
+            email: contactForm[1].value,
+            message: contactForm[2].value
+        };
+
+        try {
+            // 2. Send the data to your server.js /api/send-message route
+            const response = await fetch('/api/send-message', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                // 3. Show your custom "Message received!" text
+                successMessage.style.display = 'block';
+                contactForm.reset(); // Clear the form
+            } else {
+                alert("Error: " + result.error);
+            }
+        } catch (err) {
+            console.error("Connection failed:", err);
+            alert("Could not connect to the server.");
+        }
+    });
+</script>
 </body>
 </html>
