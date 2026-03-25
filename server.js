@@ -63,34 +63,34 @@ app.post('/api/send-message', async (req, res) => {
   }
 });
 
-// 6. Start the Server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT} 🚀`);
-});
-// The Secret Dashboard Route
-// This MUST match the URL you type in Chrome
+// 6. The Secret Dashboard Route (MUST be above app.listen)
 app.get('/system-admin-logs-888', async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM contact_messages ORDER BY created_at DESC');
-        // This generates a simple HTML table on the fly
+        
         let html = `
-            <style>
-                body { background: #121212; color: #BB86FC; font-family: 'VT323', monospace; padding: 20px; }
-                table { width: 100%; border-collapse: collapse; margin-top: 20px; border: 1px solid #333; }
-                th, td { padding: 12px; border: 1px solid #333; text-align: left; }
-                th { background: #1f1f1f; color: #03DAC6; }
-                tr:hover { background: #1a1a1a; }
-                h1 { border-bottom: 2px solid #03DAC6; display: inline-block; }
-            </style>
-            <h1>[SECRET_MESSAGES_LOG]</h1>
-            <table>
-                <tr>
-                    <th>Date</th>
-                    <th>User</th>
-                    <th>Email</th>
-                    <th>Message</th>
-                </tr>
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Admin Logs</title>
+                <style>
+                    body { background: #121212; color: #BB86FC; font-family: 'VT323', monospace; padding: 20px; }
+                    table { width: 100%; border-collapse: collapse; margin-top: 20px; border: 1px solid #333; }
+                    th, td { padding: 12px; border: 1px solid #333; text-align: left; }
+                    th { background: #1f1f1f; color: #03DAC6; }
+                    tr:hover { background: #1a1a1a; }
+                    h1 { border-bottom: 2px solid #03DAC6; display: inline-block; }
+                </style>
+            </head>
+            <body>
+                <h1>[SECRET_MESSAGES_LOG]</h1>
+                <table>
+                    <tr>
+                        <th>Date</th>
+                        <th>User</th>
+                        <th>Email</th>
+                        <th>Message</th>
+                    </tr>
         `;
 
         result.rows.forEach(msg => {
@@ -104,10 +104,20 @@ app.get('/system-admin-logs-888', async (req, res) => {
             `;
         });
 
-        html += '</table>';
+        html += `
+                </table>
+            </body>
+            </html>
+        `;
         res.send(html);
     } catch (err) {
         console.error(err);
         res.status(500).send("Could not load messages.");
     }
+});
+
+// 7. Start the Server (ALWAYS keep this as the very last line)
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT} 🚀`);
 });
