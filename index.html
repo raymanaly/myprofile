@@ -3,47 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manaly's profile:D</title>
-     <link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&family=VT323&display=swap">
+    <title>Manaly's profile :D</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&family=VT323&display=swap">
 </head>
 <body>
-
     <div class="main-wrapper">
-        
         <aside class="discord-sidebar">
             <div class="pfp-container">
                 <img src="pfp.jpeg" alt="Ray's Avatar" class="discord-pfp">
                 <div class="online-status"></div>
             </div>
-            
             <header>
-                <h2>Manaly Ray </h2>
+                <h2>Manaly Ray</h2>
                 <p>ray.m she/her</p>
             </header>
-
             <div class="sidebar-divider"></div>
-
-            
-                
-             <p>Diet coke enthusiast |BCA student |Aspiring developer |</p>
-            
-
+            <p>Diet coke enthusiast | BCA student | Aspiring developer |</p>
             <section class="tech-arsenal">
                 <h3>skills</h3>
                 <div class="stack-tags">
                     <span>Node.js</span> <span>PgSQL</span> <span>Python</span> <span>C</span> <span>Git</span> <span>RDBMS</span> <span>MongoDB</span> 
                 </div>
             </section>
-<section id="about">
-                <div class="about-flex">
-                    <div class="pixel-cat-container">
+            <div class="pixel-cat-container">
                 <img src="pixel-cat.png" alt="Pixel Cat" class="pixel-cat">
-                </div>
-
+            </div>
         </aside>
 
-            <main class="content-view">
+        <main class="content-view">
             <nav class="top-nav">
                 <span>About_Me.txt</span>
                 <span>Experience.exe</span>
@@ -51,24 +39,13 @@
             </nav>
 
             <section id="about">
-                <div class="about-flex">
-                    <div class="about-text">
-
-             
-                        <h3>Digital Me</h3>
-                        <p>I'm a passionate computer applications student exploring backend logic and immersive environments.I have always been interested in building something and this seems like the perfect way to use my skills.</p>
-
-                        <p>I'm dedicated to mastering the full stack of modern web development.</p>
-
-                        <p>Apart from web development and studies, I find myself drawn to books mostly friction,crime thiller and even greek mythology.</p>
-                    </div>
-                    
-                </div>
+                <h3>Digital Me</h3>
+                <p>I'm a passionate computer applications student exploring backend logic and immersive environments. I've always been interested in building something and this seems like the perfect way to use my skills.</p>
+                <p>Apart from studies, I find myself drawn to books—mostly crime thrillers and Greek mythology.</p>
             </section>
 
             <section id="content">
                 <h3>Drop a Message</h3>
-
                 <form id="contactForm">
                     <input type="text" placeholder="Username" required>
                     <input type="email" placeholder="Email" required>
@@ -84,62 +61,46 @@
                 <div class="sidebar-divider"></div>
                 <div class="links-container">
                     <a href="https://github.com/raymanaly" target="_blank">GitHub</a>
-                    <a href="https://www.linkedin.com/in/Manaly Ray" target="_blank">LinkedIn</a>
+                    <a href="https://www.linkedin.com/in/manaly-ray" target="_blank">LinkedIn</a>
                 </div>
             </footer>
         </main>
     </div>
 
     <script>
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault(); // Stops the page from refreshing
-            
-            // Show the success message
-            document.getElementById('successMessage').style.display = 'block';
-            
-            // Clear the form fields
-            this.reset();
-            
-            // Optional: Hide the message after 5 seconds
-            setTimeout(() => {
-                document.getElementById('successMessage').style.display = 'none';
-            }, 5000);
+        const contactForm = document.getElementById('contactForm');
+        const successMessage = document.getElementById('successMessage');
+
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = {
+                username: contactForm[0].value,
+                email: contactForm[1].value,
+                message: contactForm[2].value
+            };
+
+            try {
+                const response = await fetch('/api/send-message', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    successMessage.style.display = 'block';
+                    contactForm.reset();
+                    setTimeout(() => { successMessage.style.display = 'none'; }, 5000);
+                } else {
+                    alert("Server Error: " + result.error);
+                }
+            } catch (err) {
+                console.error("Connection failed:", err);
+                alert("Could not connect to the server. Is your Render service Live?");
+            }
         });
     </script>
-    <script>
-    const contactForm = document.getElementById('contactForm');
-    const successMessage = document.getElementById('successMessage');
-
-    contactForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const formData = {
-            username: contactForm[0].value,
-            email: contactForm[1].value,
-            message: contactForm[2].value
-        };
-
-        try {
-            // This URL must start with /api/
-            const response = await fetch('/api/send-message', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
-            });
-
-            const result = await response.json();
-
-            if (result.success) {
-                successMessage.style.display = 'block';
-                contactForm.reset();
-            } else {
-                alert("Server Error: " + result.error);
-            }
-        } catch (err) {
-            console.error("Connection failed:", err);
-            alert("Could not connect to the server. Check your Vercel logs!");
-        }
-    });
-</script>
 </body>
 </html>
