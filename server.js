@@ -69,7 +69,7 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT} 🚀`);
 });
 // The Secret Dashboard Route
-app.get('/view-messages-123', async (req, res) => {
+app.get('/system-admin-logs-888', async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM contact_messages ORDER BY created_at DESC');
         
