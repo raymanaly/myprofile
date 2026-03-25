@@ -69,10 +69,10 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT} 🚀`);
 });
 // The Secret Dashboard Route
+// This MUST match the URL you type in Chrome
 app.get('/system-admin-logs-888', async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM contact_messages ORDER BY created_at DESC');
-        
         // This generates a simple HTML table on the fly
         let html = `
             <style>
