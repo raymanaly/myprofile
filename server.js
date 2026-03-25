@@ -68,3 +68,46 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT} 🚀`);
 });
+// The Secret Dashboard Route
+app.get('/view-messages-123', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM contact_messages ORDER BY created_at DESC');
+        
+        // This generates a simple HTML table on the fly
+        let html = `
+            <style>
+                body { background: #121212; color: #BB86FC; font-family: 'VT323', monospace; padding: 20px; }
+                table { width: 100%; border-collapse: collapse; margin-top: 20px; border: 1px solid #333; }
+                th, td { padding: 12px; border: 1px solid #333; text-align: left; }
+                th { background: #1f1f1f; color: #03DAC6; }
+                tr:hover { background: #1a1a1a; }
+                h1 { border-bottom: 2px solid #03DAC6; display: inline-block; }
+            </style>
+            <h1>[SECRET_MESSAGES_LOG]</h1>
+            <table>
+                <tr>
+                    <th>Date</th>
+                    <th>User</th>
+                    <th>Email</th>
+                    <th>Message</th>
+                </tr>
+        `;
+
+        result.rows.forEach(msg => {
+            html += `
+                <tr>
+                    <td>${new Date(msg.created_at).toLocaleString()}</td>
+                    <td>${msg.username}</td>
+                    <td>${msg.email}</td>
+                    <td>${msg.message}</td>
+                </tr>
+            `;
+        });
+
+        html += '</table>';
+        res.send(html);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Could not load messages.");
+    }
+});
