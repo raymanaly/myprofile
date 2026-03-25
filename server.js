@@ -1,24 +1,32 @@
 const express = require('express');
 const { Pool } = require('pg');
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
 
-// Middleware: This allows your server to understand JSON data from your form
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-// 1. Setup the Connection Pool (The bridge to Neon)
-// Vercel automatically provides the DATABASE_URL when you connect Neon
+// 1. Serve static files (Makes your CSS and Images work on Render)
+app.use(express.static(path.join(__dirname)));
+
+// 2. Database Connection (Neon)
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
-    rejectUnauthorized: false // Required for Neon/Vercel security
+    rejectUnauthorized: false 
   }
 });
 
-// 2. The "Post Office" Route (Receives your messages)
+// 3. The Home Route (Shows your HTML when someone visits your link)
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// 4. The Message Route (Saves form data to Neon)
 app.post('/api/send-message', async (req, res) => {
   const { username, email, message } = req.body;
 
@@ -36,7 +44,7 @@ app.post('/api/send-message', async (req, res) => {
   }
 });
 
-// 3. Start the Server
+// 5. Start the Server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT} 🚀`);
