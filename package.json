@@ -1,7 +1,7 @@
 {
   "name": "myprofile",
   "version": "1.0.0",
-  "description": "Kaia's Portfolio with Neon Database Integration",
+  "description": "Manaly's Portfolio with Render Postgres",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
